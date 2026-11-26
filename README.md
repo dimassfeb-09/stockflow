@@ -16,7 +16,7 @@ Database migrations and seed data are applied automatically on first run.
 ## Open
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8080
-- Postgres: localhost:5433
+- Postgres: localhost:5434
 
 ## Tests
 
@@ -38,3 +38,5 @@ npm run build
 ## Screenshots
 
 ![First page](assets/screenshots/01-first-page.png)
+## Port conflict
+If ports are in use, change only the host side in `docker-compose.yml`, e.g. `8081:8080`.

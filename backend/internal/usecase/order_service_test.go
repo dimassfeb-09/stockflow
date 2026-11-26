@@ -76,6 +76,10 @@ func TestOrderService_InsufficientStock(t *testing.T) {
 	if got.Stock != 2 {
 		t.Fatalf("stock changed: %d", got.Stock)
 	}
+	// nothing written (no movements, no orders)
+	if len(mr.movements) != 0 {
+		t.Fatalf("movements written: %d", len(mr.movements))
+	}
 }
 
 func TestOrderService_HappyPath(t *testing.T) {
@@ -137,3 +141,16 @@ func TestOrderService_CancelRestoresStock(t *testing.T) {
 }
 
 
+
+func TestOrderService_CancelNotFound(t *testing.T) {
+	pr := newFakeProductRepo()
+	mr := newFakeMovementRepo()
+	or := newFakeOrderRepo()
+	tx := &fakeTxManager{repos: entity.Repositories{Products: pr, Movements: mr, Orders: or}}
+	svc := NewOrderService(pr, mr, or, tx)
+
+	_, err := svc.Cancel(context.Background(), 999)
+	if err != entity.ErrNotFound {
+		t.Fatalf("expected not found, got %v", err)
+	}
+}

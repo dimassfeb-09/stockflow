@@ -38,6 +38,7 @@ export function CreateOrderModal({
   const [serverError, setServerError] = useState<string | null>(null)
   const [failedSku, setFailedSku] = useState<string | null>(null)
   const [available, setAvailable] = useState<number | null>(null)
+  const [idempotencyKey, setIdempotencyKey] = useState<string>(() => crypto.randomUUID())
   const [saving, setSaving] = useState(false)
 
   const { toast } = useToast()
@@ -51,6 +52,7 @@ export function CreateOrderModal({
     setServerError(null)
     setFailedSku(null)
     setAvailable(null)
+    setIdempotencyKey(crypto.randomUUID())
     setProducts([])
     setLoadingProducts(true)
 
@@ -114,7 +116,7 @@ export function CreateOrderModal({
     try {
       const order: SalesOrder = await api.createOrder(
         { customer, items: parsedItems },
-        crypto.randomUUID()
+        idempotencyKey
       )
 
       toast('Order created successfully', 'success')

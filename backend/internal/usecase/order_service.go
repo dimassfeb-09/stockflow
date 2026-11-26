@@ -35,13 +35,13 @@ func (s *OrderService) Create(ctx context.Context, customer string, inputs []Ord
 	seen := map[string]bool{}
 	for i, it := range inputs {
 		if it.SKU == "" {
-			fields[fmt.Sprintf("items[%d].sku", i)] = "sku is required"
+			fields[fmt.Sprintf("items.%d.sku", i)] = "sku is required"
 		}
 		if it.Qty <= 0 {
-			fields[fmt.Sprintf("items[%d].qty", i)] = "qty must be > 0"
+			fields[fmt.Sprintf("items.%d.qty", i)] = "qty must be > 0"
 		}
 		if it.SKU != "" && seen[it.SKU] {
-			fields[fmt.Sprintf("items[%d].sku", i)] = "duplicate sku in order"
+			fields[fmt.Sprintf("items.%d.sku", i)] = "duplicate sku in order"
 		}
 		seen[it.SKU] = true
 	}

@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: stockflow
       POSTGRES_DB: stockflow
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./backend/migrations/000001_init.up.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
